@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- e.g.1 配置Cat对象 -->
+    <bean id="cat" class="pers.felix.spring5.injectproperty.Cat"></bean>
+
+    <!-- e.g.2 配置Dog对象  set方法注入属性  -->
+    <bean id="dog" class="pers.felix.spring5.injectproperty.Dog">
+        <!-- 使用property配置属性注入
+            name 类中的属性名
+            value 要注入的属性值 -->
+        <property name="name" value="哈士奇"></property>
+    </bean>
+
+    <!-- e.g.3 配置Person对象 有参构造函数注入属性 -->
+    <bean id="person" class="pers.felix.spring5.injectproperty.Person">
+        <!-- 使用constructor配置有参构造函数注入
+            name 类中的属性名
+            value 要注入的属性值 -->
+        <constructor-arg name="name" value="张三"></constructor-arg>
+    </bean>
+
+    <!-- e.g.4 配置Book对象 p名称空间注入 -->
+    <bean id="book" class="pers.felix.spring5.injectproperty.Book" p:name="铃芽之旅" p:author="新海诚"></bean>
+
+    <!-- e.g.5 注入null值 -->
+    <bean id="book1" class="pers.felix.spring5.injectproperty.Book">
+        <property name="name" value="这是一本奇怪的书"></property>
+        <property name="author"><null/></property>
+    </bean>
+
+    <!-- e.g.6 注入值有特殊符号 -->
+    <bean id="book2" class="pers.felix.spring5.injectproperty.Book">
+        <property name="name"><value><![CDATA[<<这也是一本奇怪的书>>]]></value></property>
+    </bean>
+
+    <!-- e.g.7 注入外部bean -->
+    <bean id="userDaoImpl" class="pers.felix.spring5.injectproperty.UserDaoImpl"></bean>
+    <bean id="userService" class="pers.felix.spring5.injectproperty.UserService">
+        <property name="userDao" ref="userDaoImpl"></property>
+    </bean>
+
+    <!-- e.g.8 注入内部bean -->
+    <bean id="emp" class="pers.felix.spring5.injectproperty.Emp">
+        <!-- 设置普通属性 -->
+        <property name="name" value="张三"></property>
+        <property name="gender" value="男"></property>
+        <!-- 设置对象属性 -->
+        <property name="dept">
+            <bean id="dept" class="pers.felix.spring5.injectproperty.Dept">
+                <property name="name" value="研发部"></property>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- e.g.9 注入属性 级联赋值1 -->
+    <bean id="dept1" class="pers.felix.spring5.injectproperty.Dept">
+        <property name="name" value="财务部"></property>
+    </bean>
+    <bean id="emp1" class="pers.felix.spring5.injectproperty.Emp">
+        <property name="name" value="露西"></property>
+        <property name="gender" value="女"></property>
+        <property name="dept" ref="dept1"></property>
+    </bean>
+
+    <!-- e.g.10 注入属性 级联赋值2 -->
+    <bean id="dept2" class="pers.felix.spring5.injectproperty.Dept">
+        <property name="name" value="行政部"></property>
+    </bean>
+    <bean id="emp2" class="pers.felix.spring5.injectproperty.Emp">
+        <property name="name" value="李四"></property>
+        <property name="gender" value="男"></property>
+        <property name="dept" ref="dept2"></property>
+        <property name="dept.name" value="财务部"></property>
+    </bean>
+
+    <!-- e.g.11 配置Student对象 集合类型属性注入 -->
+    <bean id="student" class="pers.felix.spring5.injectproperty.Student">
+        <!-- 数组类型 -->
+        <property name="courses">
+            <array>
+                <value>HTML</value>
+                <value>CSS</value>
+                <value>JavaScript</value>
+            </array>
+        </property>
+        <!-- list类型 -->
+        <property name="list">
+            <list>
+                <value>C++</value>
+                <value>Java</value>
+                <value>Python</value>
+            </list>
+        </property>
+        <!-- map类型　-->
+        <property name="map">
+            <map>
+                <entry key="name" value="Amy"></entry>
+                <entry key="age" value="18"></entry>
+                <entry key="sex" value="woman"></entry>
+            </map>
+        </property>
+        <!-- set类型 -->
+        <property name="set">
+            <set>
+                <value>Oracle</value>
+                <value>MySQL</value>
+                <value>PostgreSql</value>
+            </set>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="username">root</prop>
+                <prop key="password">123456</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- e.g.12 在集合设置对象类型值 -->
+    <bean id="book3" class="pers.felix.spring5.injectproperty.Book">
+        <property name="name" value="天气之子"></property>
+        <property name="author" value="新海诚"></property>
+    </bean>
+    <bean id="book4" class="pers.felix.spring5.injectproperty.Book">
+        <property name="name" value="你的名字"></property>
+        <property name="author" value="新海诚"></property>
+    </bean>
+    <bean id="user" class="pers.felix.spring5.injectproperty.User">
+        <property name="bookList">
+            <list>
+                <ref bean="book3"></ref>
+                <ref bean="book4"></ref>
+            </list>
+        </property>
+    </bean>
+
+    <!-- e.g.13 测试提取List注入部分 -->
+    <util:list id="orderList">
+        <value>电脑</value>
+        <value>手机</value>
+        <value>平板电脑</value>
+    </util:list>
+    <bean id="account" class="pers.felix.spring5.injectproperty.Account">
+        <property name="orderList" ref="orderList"></property>
+    </bean>
+
+    <!-- e.g.14 工厂bean -->
+    <bean id="myBean" class="pers.felix.spring5.injectproperty.MyBean"></bean>
+
+    <!-- e.g.15 Spring创建对象默认情况下是单例 -->
+    <bean id="brand" class="pers.felix.spring5.injectproperty.Brand">
+        <property name="name" value="小米"></property>
+    </bean>
+
+    <!-- e.g.16 设置Spring创建对象为多实例 -->
+    <bean id="brand1" class="pers.felix.spring5.injectproperty.Brand" scope="prototype">
+        <property name="name" value="苹果"></property>
+    </bean>
+</beans>

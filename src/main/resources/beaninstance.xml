@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--    <bean id="userDao" class="pers.felix.spring5.beaninstance.dao.impl.UserDaoImpl"></bean>-->
+
+    <!-- 静态工厂实例化Bean配置 -->
+    <!-- class：工厂类全限定名 factory-method：工厂创建对象的方法名 -->
+<!--    <bean id="userDao" class="pers.felix.spring5.beaninstance.factory.UserDaoFactory" factory-method="getUserDao"></bean>-->
+
+    <!-- 实例工厂实例化Bean配置 -->
+    <!--
+        instanceFactory 工厂的实例对象
+        factory-bean 指向工厂的实例对象
+        factory-method 工厂对象中创建对象的方法名
+    -->
+<!--    <bean id="userFactory" class="pers.felix.spring5.beaninstance.factory.UserDaoFactory"></bean>-->
+<!--    <bean id="userDao" factory-bean="userFactory" factory-method="getUserDao"></bean>-->
+
+    <!-- FactoryBean实例化Bean -->
+    <bean id="userDao" class="pers.felix.spring5.beaninstance.factory.UserDaoFactoryBean"></bean>
+
+</beans>
